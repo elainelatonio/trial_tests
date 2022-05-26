@@ -48,20 +48,20 @@ class Profile:
     def __repr__(self):
         return f"{self.age} year old {self.gender}, looking for a {self.gender_pref}. (id: {self.id})"
 
-    def likes(self, profile):
+    def likes(self, target):
         if self.likes_per_day < 1:
             print("You can't like more, you've reached your like limit.")
-        elif profile.id == self.id:
+        elif target.id == self.id:
             print("You can't like your own profile.")
-        elif profile.id in self.likes_list:
+        elif target.id in self.likes_list:
             print("You already liked this profile.")
         else:
-            self.likes_list.append(profile.id)
+            self.likes_list.append(target.id)
             self.likes_per_day -= 1
-            if self.id in profile.likes_list:
+            if self.id in target.likes_list:
                 print("It's a match!")
 
-    def send_message(self, profile, message):
+    def send_message(self, target, message):
         print("Unable to send message, upgrade your profile to Pro.")
 
 
@@ -82,10 +82,10 @@ class ProProfile(Profile):
         self.likes_per_day = 1000
 
     def __repr__(self):
-        return f"{(self.name).capitalize()} is a {self.age} year old {self.gender}, looking for a {self.gender_pref}. (id: {self.id})"
+        return f"{self.name.capitalize()} is a {self.age} year old {self.gender}, looking for a {self.gender_pref}. (id: {self.id})"
 
-    def send_message(self, profile, message):
-        print(f"Message is sent to profile #{profile.id}.")
+    def send_message(self, target, message):
+        print(f"Message is sent to profile #{target.id}.")
 
 
 ### SAMPLE CODE Using your solution, the following code should run without errors and print the expected results

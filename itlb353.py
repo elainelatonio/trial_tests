@@ -17,28 +17,28 @@ class DatingApp:
             profile.reset_likes_count()
 
     def recommend_profiles(self, target):
-        return f"{[profile.profile_id for profile in self.registered_profiles if profile.profile_id not in target.likes_list and target.gender_pref == profile.gender and target.gender == profile.gender_pref]}"
+        return f"{[profile.id for profile in self.registered_profiles if profile.id not in target.likes_list and target.gender_pref == profile.gender and target.gender == profile.gender_pref]}"
 
     def who_liked_profile(self, target):
-        return f"{[profile.profile_id for profile in self.registered_profiles if target.profile_id in profile.likes_list]}"
+        return f"{[profile.id for profile in self.registered_profiles if target.id in profile.likes_list]}"
 
     def advanced_recommend_profiles(self, target):
-        recommendations = [profile.profile_id for profile in self.registered_profiles if
-                           profile.profile_id not in target.likes_list and target.gender_pref == profile.gender and target.gender == profile.gender_pref and target.profile_id in profile.likes_list]
-        recommendations += [profile.profile_id for profile in self.registered_profiles if
-                            profile.profile_id not in target.likes_list and target.gender_pref == profile.gender and target.gender == profile.gender_pref and target.profile_id not in profile.likes_list]
+        recommendations = [profile.id for profile in self.registered_profiles if
+                           profile.id not in target.likes_list and target.gender_pref == profile.gender and target.gender == profile.gender_pref and target.id in profile.likes_list]
+        recommendations += [profile.id for profile in self.registered_profiles if
+                            profile.id not in target.likes_list and target.gender_pref == profile.gender and target.gender == profile.gender_pref and target.id not in profile.likes_list]
         return recommendations
 
 
 class Profile:
-    profile_id = 1
+    id = 1
 
     def __init__(self, gender, age, gender_pref):
-        self.profile_id = Profile.profile_id
+        self.id = Profile.id
         self.age = age
         self.gender = gender
         self.gender_pref = gender_pref
-        Profile.profile_id += 1
+        Profile.id += 1
         self.likes_per_day = 1
         self.likes_list = []
 
@@ -46,19 +46,19 @@ class Profile:
         self.likes_per_day = 1
 
     def __repr__(self):
-        return f"{self.age} year old {self.gender}, looking for a {self.gender_pref}. (id: {self.profile_id})"
+        return f"{self.age} year old {self.gender}, looking for a {self.gender_pref}. (id: {self.id})"
 
     def likes(self, profile):
         if self.likes_per_day < 1:
             print("You can't like more, you've reached your like limit.")
-        elif profile.profile_id == self.profile_id:
+        elif profile.id == self.id:
             print("You can't like your own profile.")
-        elif profile.profile_id in self.likes_list:
+        elif profile.id in self.likes_list:
             print("You already liked this profile.")
         else:
-            self.likes_list.append(profile.profile_id)
+            self.likes_list.append(profile.id)
             self.likes_per_day -= 1
-            if self.profile_id in profile.likes_list:
+            if self.id in profile.likes_list:
                 print("It's a match!")
 
     def send_message(self, profile, message):
@@ -82,10 +82,10 @@ class ProProfile(Profile):
         self.likes_per_day = 1000
 
     def __repr__(self):
-        return f"{(self.name).capitalize()} is a {self.age} year old {self.gender}, looking for a {self.gender_pref}. (id: {self.profile_id})"
+        return f"{(self.name).capitalize()} is a {self.age} year old {self.gender}, looking for a {self.gender_pref}. (id: {self.id})"
 
     def send_message(self, profile, message):
-        print(f"Message is sent to profile #{profile.profile_id}.")
+        print(f"Message is sent to profile #{profile.id}.")
 
 
 ### SAMPLE CODE Using your solution, the following code should run without errors and print the expected results

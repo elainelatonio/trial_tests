@@ -12,24 +12,30 @@ n x n multiplication table in a two dimensional array, where the “fizz-buzz”
 '''
 
 def fizz_buzz_table(n):
-    def fizz_buzz(product):
-        if product % 3 == 0 and product % 5 == 0:
-            return "fizzbuzz"
-        elif product % 3 == 0:
-            return "fizz"
-        elif product % 5 == 0:
-            return "buzz"
-        else:
-            return product
+    STRING_FOR_DIVISIBLE_BY_3 = "Fizz"
+    STRING_FOR_DIVISIBLE_BY_5 = "Buzz"
 
-    if not type(n) is int or n < 0:
+    def fizz_buzz(product):
+        fizz_buzzed_product = ""
+        if product % 3 == 0:
+            fizz_buzzed_product += STRING_FOR_DIVISIBLE_BY_3
+        if product % 5 == 0:
+            fizz_buzzed_product += STRING_FOR_DIVISIBLE_BY_5
+        if fizz_buzzed_product == "":
+            fizz_buzzed_product = str(product)
+        return fizz_buzzed_product
+
+
+    if not isinstance(n, int):
         raise TypeError("Only positive integers are allowed")
-    else:
-        table = []
-        for row in range(1,n+1):
-            nums = [fizz_buzz(row * col) for col in range(1,n+1)]
-            table.append(nums)
-        print(table)
+    if n < 0:
+        raise ValueError("Integer should be positive")      #raise will stop the code if error, dont need else statement
+
+    table = []
+    for row in range(n):
+        numbers = [fizz_buzz((row + 1) * (column + 1)) for column in range(n)]
+        table.append(numbers)
+    return print(table)
 
 
 
@@ -47,18 +53,25 @@ there can be , and . characters in the sentences
 The function should handle possible exceptions by printing messages to the standard output.'''
 
 def find_most_common(filename):
-    if not type(filename) is str:
-        print("Input filename as string, for example 'sample.txt'")
-    else:
-        try:
-            text = ""
-            with open(filename, "r") as list_obj:
-                for line in list_obj.readlines():
-                    text += line.lower().replace(".","").replace(",","")
-                word_count = {word : text.split().count(word) for word in text.split()}
-                most_common_word = max(word_count, key=word_count.get)
-            print(most_common_word)
-        except FileNotFoundError:
-            print("File not found, input valid filename, for example 'sample.txt'")
+    def clean_text(text, separators=[".",","]):
+        for separator in separators:
+            text = text.replace(separator,"")
+        return text.lower().split()
 
+    def get_word_count(file):
+        word_count = {}
+        for line in file:
+            cleaned_text_list = clean_text(line)
+            for word in cleaned_text_list:
+                word_count[word] = word_count.get(word,0) + 1
+        return word_count
 
+    if not isinstance(filename,str):
+        raise TypeError("Input filename as string, for example 'sample.txt'")
+    with open(filename, "r") as file:
+        word_count = get_word_count(file)
+        most_common_word = max(word_count, key=word_count.get)
+    return most_common_word
+# no need for FileNotFoundError and ValueError (empty file) handling because there is built-in exception
+
+print(find_most_common("sample.txt"))

@@ -3,18 +3,20 @@
 class DatingApp:
     def __init__(self, name):
         self.name = name
-
-    def register(self, *profiles):
         self.registered_profiles = []
+
+    def register(self, *profiles): #separate the tasks of checking and adding to registered_profiles
         for profile in profiles:
-            if isinstance(profile, Profile):
-                self.registered_profiles.append(profile)
-            else:
+            if isinstance([profile for profile in profiles], Profile):
                 raise TypeError(f"{profile} is not an object of class Profile.")
+
+        self.registered_profiles = [profile for profile in profiles]
 
     def new_day(self):
         for profile in self.registered_profiles:
             profile.reset_likes_count()
+
+    def check_recommend_criteria(self,target, profile):
 
     def recommend_profiles(self, target):
         return f"{[profile.id for profile in self.registered_profiles if profile.id not in target.likes_list and target.gender_pref == profile.gender and target.gender == profile.gender_pref]}"
